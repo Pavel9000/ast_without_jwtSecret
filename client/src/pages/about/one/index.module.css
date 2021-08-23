@@ -1,0 +1,263 @@
+ /* create and update */
+.QuizCreator {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    flex-grow: 1;
+    width: 100%;
+    background: linear-gradient(270deg, #f0613c 0%, #f0783c 100%);
+}
+
+.QuizCreator > div {
+    width: 100%;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+.QuizCreator h1 {
+    text-align: center;
+}
+
+.QuizCreator form {
+    background: #eee;
+    border-radius: 5px;
+    padding: 15px;
+    box-shadow: 2px 2px 2px  rgba(0, 0, 0, .5);
+}
+
+.btnGoBack {
+    cursor: pointer;
+    position: fixed;    
+    top: 16px;
+    right: 25px;
+}
+.btnGoBack svg{
+    width: 32px;
+    height: 32px;
+}
+
+.formCreate {
+    display: flex;
+    flex-direction: column;
+}
+.btnCreate {
+    margin-top: 15px;
+}
+
+
+/* input */
+.Input {
+    display: flex;
+    margin-bottom: 15px;
+    flex-direction: column;
+}
+
+.Input label {
+    margin-bottom: 3px;
+    padding: 0;
+    display: block;
+    /* font-weight: bold; */
+}
+
+.Input input {
+    display: block;
+    box-sizing: border-box;
+    border: 1px solid #bebebe;
+    padding: 7px;
+    margin: 0 0 5px;
+    width: 100%;
+    outline: none;
+    transform: all 300ms ease-in-out;
+}
+
+.Input span {
+    color: #f01f30;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.Input.invalid label {
+    color: #f01f30;
+}
+
+
+/* textEditor */
+.divTextEditor {
+    display: inline-block;  
+    background-color: rgba(180,180,180,.8); 
+    border: 1px solid rgba(155,155,155,.6);
+}
+.intLink { 
+    cursor: pointer; 
+    border: 0; 
+}
+.textBox {
+    /* min-width: 500px; */
+    /* height: 300px; */
+    border: 1px solid rgba(155,155,155,.6);
+    padding: 12px;
+    overflow: scroll; 
+    /* background-color: #eff; */
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    /* max-width: 800px; */
+    min-height: 200px;
+}
+
+/* drag and drop */
+.dragAndDrop_wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    /* justify-content: center; */
+}
+.dragAndDrop {
+    width: 60px;
+    height: 76px;
+    border: 2px dashed rgba(6, 14, 128, 0.329);
+    border-radius: 10px;
+}
+.dragAndDrop:hover {
+    background-color: #ccc;
+}
+.dragAndDrop input {
+    display: none;
+}
+.dragAndDrop label, .addVideo{
+    color: black!important;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* modal */
+.modalVideoWrap {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    top: 20px;
+}
+.modalVideoWrap > div > div{
+    margin: 10px;
+}
+.modalVideoWrap button {
+    margin: 0 3px;
+}
+.modalVideoWrap > div{
+    background: blue;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 250px;
+    height: 150px;
+}
+
+
+/* littleImg */
+.littleImg_wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.littleImg, .dragAndDrop {
+    margin: 10px;
+    cursor: pointer;
+}
+.littleImg img {
+    width: 60px;
+    height: 80px;
+}
+
+
+.resizeImg_wrap {
+    z-index: 1100;
+}
+
+.deleteSvg {
+    position: absolute;
+    background-color: #fff;
+    cursor: pointer;
+    opacity: 0.5;
+    width: 20px;
+    height: 20px;
+}
+.deleteSvg:hover {
+    opacity: 0.7;
+}
+
+
+
+
+
+/* view */
+.Post {
+    display: flex;
+    justify-content: center;
+    /* padding-top: 50px; */
+    flex-grow: 1;
+    width: 100%;
+    background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%)
+}
+.Post h1 {
+    color: #fff;
+    text-align: center;
+}
+.Post p {
+    color: #fff;
+}
+.PostWrapper {
+    width: 100%;
+}
+.img_background_big {
+    width: 300px;
+    height: 400px;
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px;
+}
+.img_background {
+    width: 60px;
+    height: 80px;
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin: 10px;
+}
+.wrap_little_img, .wrap_big_img {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.descr {
+    margin: 20px;
+    padding: 20px 20px;
+    border: solid 1px silver;
+    border-radius: 5px;
+}
+.descr p {
+    margin: 5px;
+}
+.btnGoBack {
+    cursor: pointer;
+    position: fixed;    
+    top: 25px;
+    right: 25px;
+}
+.btnGoBack svg{
+    width: 32px;
+    height: 32px;
+}

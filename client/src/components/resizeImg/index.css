@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.tblr_over_lay {
+    position: absolute;
+    background: black;
+    opacity: 0.7;
+    z-index: 5;
+}
+#xd {
+    width: 300px;
+    height: 300px;
+    border: solid 1px black;
+    box-sizing: border-box;
+    position:absolute;
+    z-index: 3;
+    cursor: move;
+}
+.littleDrag {
+    border-radius: 30%;
+    background: white;
+    border: solid 5px blue;
+    position:absolute;
+    cursor: pointer;
+    z-index: 7;
+}
+#ttt {
+    width: 20px;
+    height: 10px;
+    cursor: s-resize;
+}
+#bbb {
+    width: 20px;
+    height: 10px;
+    cursor: n-resize;
+}
+#lll {
+    width: 10px;
+    height: 20px;
+    cursor: e-resize;
+}
+#rrr {
+    width: 10px;
+    height: 20px;
+    cursor: w-resize;
+}
+#wrap_buttom_resize_img {
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,272 @@
+.Post {
+    display: flex;
+    justify-content: center;
+    padding-top: 50px;
+    flex-grow: 1;
+    width: 100%;
+    background: linear-gradient(90deg, #5041b2 0%, #7969e6 100%)
+}
+
+.Post h1 {
+    color: #fff;
+    /* margin-left: 10px; */
+    font-weight: 400; 
+    text-align: center;
+}
+
+.PostWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    /* width: 95%; */
+    /* padding: 10px; */
+}
+.list__card h4, .list__card h6, .list__card p {
+    margin: 5px;
+    color: #fff;
+    text-align: center;
+}
+.list__card {
+    /* margin: 20px; */
+    /* margin: 0;
+    padding: 0; */
+    /* flex-basis: 250px; */
+    width: 250px;
+    /* border: solid 1px silver; */
+    cursor: pointer;
+    /* border-radius: 5%; */
+    /* border-radius: 5%; */
+}
+.list__card:hover {
+    opacity: 0.7;
+}
+.img_background {
+    cursor: pointer;
+    height: 333px;
+    /* border-radius: 50%; */
+    /* border-radius: 5%; */
+    border-radius: 5px 5px 0 0;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-image: url(https://avatarko.ru/img/kartinka/33/multfilm_lyagushka_32117.jpg); */
+}
+
+
+
+.cardWrap {
+    /* border-radius: 5px; */
+    margin: 10px 20px;    
+    /* border: solid 1px silver; */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.cardWrap img {
+    border-radius: 50%;
+}
+.buttonWrap {
+    display: flex;
+    justify-content: center;
+    /* margin: 3px; */
+}
+
+.btnCreate {
+    z-index: 87;
+    position: fixed;    
+    top: 16px;
+    right: 25px;
+}
+
+/* button showMore */
+.wrapShowMore {
+    display: flex;
+    justify-content: center;
+}
+.showMore {
+    border: 1px solid #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+    margin: 15px 15px;
+    cursor: pointer;
+    color: #fff;
+    font-size: 18px;
+}
+
+.showMore:hover {
+    background: rgba(255, 255, 255, .2);
+    transition: background .3s ease-in-out;
+}
+.showMore a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+}
+
+
+/* littleImg */
+.littleImg_wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.littleImg, .dragAndDrop {
+    margin: 10px;
+    cursor: pointer;
+}
+.littleImg img {
+    width: 60px;
+    height: 80px;
+}
+
+.deleteSvg {
+    position: absolute;
+    background-color: #fff;
+    cursor: pointer;
+    opacity: 0.5;
+    width: 20px;
+    height: 20px;
+}
+.deleteSvg:hover {
+    opacity: 0.7;
+}
+
+.dragAndDrop {
+    width: 60px;
+    height: 76px;
+    border: 2px dashed rgba(6, 14, 128, 0.329);
+    border-radius: 10px;
+}
+.dragAndDrop:hover {
+    background-color: #ccc;
+}
+.addVideo{
+    color: black!important;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+
+/* input */
+.Input {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+    flex-direction: column;
+    width: 90%;
+}
+
+.Input label {
+    margin-bottom: 3px;
+    padding: 0;
+    display: block;
+    /* font-weight: bold; */
+}
+
+.Input input {
+    display: block;
+    box-sizing: border-box;
+    border: 1px solid #bebebe;
+    padding: 7px;
+    margin: 0 0 5px;
+    width: 100%;
+    outline: none;
+    transform: all 300ms ease-in-out;
+}
+
+.Input span {
+    color: #f3a0a7;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.Input.invalid label {
+    color: #f3a0a7;
+}
+
+/* modal */
+.modalVideoWrap {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    top: 20px;
+}
+.modalVideoWrap > div > div{
+    margin: 10px;
+}
+.modalVideoWrap button {
+    margin: 0 3px;
+}
+.modalVideoWrap > div{
+    background: blue;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 250px;
+    height: 150px;
+}
+
+
+/* textEditor */
+.divTextEditor {
+    display: inline-block;  
+    background-color: rgba(180,180,180,.8); 
+    border: 1px solid rgba(155,155,155,.6);
+}
+.intLink { 
+    cursor: pointer; 
+    border: 0; 
+}
+.textBox {
+    /* min-width: 500px; */
+    /* height: 300px; */
+    border: 1px solid rgba(155,155,155,.6);
+    padding: 12px;
+    overflow: scroll; 
+    /* background-color: #eff; */
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    color: black;
+    /* max-width: 800px; */
+    min-height: 200px;
+}
+
+/* descr */
+
+.descr {
+    margin: 20px;
+    padding: 20px 20px;
+    border: solid 1px silver;
+    border-radius: 5px;
+    width: 90%;
+    cursor: pointer;
+}
+
+.descr:hover {
+    background: rgba(255, 255, 255, .2);
+    transition: background .3s ease-in-out;
+}
+.descr p {
+    margin: 5px;
+    color: #fff;
+}

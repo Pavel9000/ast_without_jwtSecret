@@ -1,0 +1,23 @@
+.divTextEditor {
+    display: inline-block;  
+    background-color: rgba(180,180,180,.8); 
+    border: 1px solid rgba(155,155,155,.6);
+}
+.intLink { 
+    cursor: pointer; 
+    border: 0; 
+}
+.textBox {
+    /* min-width: 500px;
+    height: 300px; */
+    border: 1px solid rgba(155,155,155,.6);
+    padding: 12px;
+    overflow: scroll; 
+    /* background-color: #eff; */
+    background-color: #fff;
+    padding: 0;
+    margin: 0;
+    /* max-width: 800px; */
+    min-height: 200px;
+}
+    

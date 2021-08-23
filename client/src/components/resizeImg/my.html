@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Photo editor</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body 
+	onmouseup="if (event.which == 1) { resize_control = false }"
+	onmousemove="if (event.which == 1 && resize_control) { resize_or_drag(resize_control) }"
+>
+	<style>
+		#tblr_over_lay {
+			position: absolute;
+			background: black;
+			opacity: 0.5;
+			z-index: 5;
+		}
+		#xd {
+			width: 300px;
+			height: 300px;
+			border: solid 5px black;
+			position:absolute;
+			z-index: 3;
+		}
+		#littleDrag {
+			border-radius: 30%;
+			background: white;
+			border: solid 5px blue;
+			position:absolute;
+			cursor: pointer;
+			z-index: 7;
+		}
+		#ttt {
+			width: 20px;
+			height: 10px;
+		}
+		#bbb {
+			width: 20px;
+			height: 10px;
+		}
+		#lll {
+			width: 10px;
+			height: 20px;
+		}
+		#rrr {
+			width: 10px;
+			height: 20px;
+		}
+	</style>
+	<div id="t_over_lay tblr_over_lay"></div>
+	<div id="b_over_lay tblr_over_lay"></div>
+	<div id="l_over_lay tblr_over_lay"></div>
+	<div id="r_over_lay tblr_over_lay"></div>
+	<div id="ttt littleDrag" 
+		ondragstart = "return false;"
+		onmousedown="if (event.which == 1) { resize_control = 'ttt'; yyy = event.clientY; }" 
+	></div>
+	<div id="bbb littleDrag"
+		ondragstart = "return false;"
+		onmousedown="if (event.which == 1) { resize_control = 'bbb'; yyy = event.clientY; }" 
+	></div>
+	<div id="lll littleDrag"
+		ondragstart = "return false;"
+		onmousedown="if (event.which == 1) { resize_control = 'lll'; xxx = event.clientX; }" 
+	></div>
+	<div id="rrr littleDrag" 
+		ondragstart = "return false;"
+		onmousedown="if (event.which == 1) { resize_control = 'rrr'; xxx = event.clientX; }" 
+	></div>
+	<div id="xd"
+		ondragstart = "return false;"
+		onmousedown="if (event.which == 1) { resize_control = 'xd'; xxx = event.clientX; yyy = event.clientY; }" 
+	></div>
+
+	<button onclick="postInServer()">отправить на сервер</button>
+	
+	<canvas id='canvas'></canvas>
+	<input type="file" onchange="change_img()" accept="image/*" id='loadImage'>
+	<script>
+		var resize_control = false
+		var xxx, yyy
+		var ttt, bbb, lll, rrr
+		var xd_border = 5
+		var xd
+		var xd_rect
+		var canvas_rect 
+		// чтоб небыло скрола и пользоваться координатами относительно окна, а не документа
+		document.body.style.overflow = 'hidden';
+
+		var image
+		const loadImageElement = document.getElementById('loadImage')
+		async function change_img() {
+			const file = loadImageElement.files[0]
+			const base64 = await getBase64(file)
+			image = new Image()
+			image.onload = async () => {
+				await draw_canvas(image)
+				await create_region()
+			}
+			image.src = base64
+		}
+		
+		function getBase64(file) {
+			return new Promise((resolve, reject) => {
+				const reader = new FileReader()
+				reader.readAsDataURL(file)
+				reader.onload = () => resolve(reader.result)
+				reader.onerror = error => reject(error)
+			});
+		}
+		
+		// (async () => {
+		// 	image = await loadImage('spacex.jpg')
+		// 	draw_canvas(image)
+		// 	create_region()
+		// })()
+
+		// function loadImage (src) {
+		// 	return new Promise((resolve, reject) => {
+		// 		try {
+		// 			const image = new Image
+		// 			image.onload = () => resolve(image)
+		// 			image.src = src
+		// 		} catch (err) {
+		// 			return reject(err)
+		// 		}
+		// 	})
+		// }
+
+		function draw_canvas(image) {
+			const canvas = document.getElementById('canvas')
+			const context = canvas.getContext('2d')
+			canvas.width = image.width
+			canvas.height = image.height
+			context.drawImage(
+				image,
+				0, 0, image.width, image.height,
+				0, 0, image.width, image.height
+			)
+		}
+
+
+		function create_region() {
+			xd = document.querySelector('#xd')
+			xd_rect = xd.getBoundingClientRect()
+			canvas_rect = document.querySelector('#canvas').getBoundingClientRect()
+			if ( canvas_rect.width >= (3/4)*canvas_rect.height ) {
+				xd.style.height = `${canvas_rect.height-2*xd_border}px`
+				xd.style.width=`${((3/4)*canvas_rect.height-2*xd_border)}px`
+				xd.style.left = canvas_rect.left + ((canvas_rect.width - ((3/4)*canvas_rect.height))/2) + 'px'
+				xd.style.top = canvas_rect.top + 'px'
+			} else {
+				xd.style.width = `${canvas_rect.width-2*xd_border}px`
+				xd.style.height=`${((4/3)*canvas_rect.width-2*xd_border)}px`
+				xd.style.left = canvas_rect.left + 'px'
+				xd.style.top = canvas_rect.top + (canvas_rect.height - (((4/3)*canvas_rect.width)))/2 + 'px'
+			}
+			update_little()
+		}
+
+		function update_little() {
+			xd_rect = xd.getBoundingClientRect()
+			var rrr = document.querySelector('#rrr')
+			var rrr_rect = rrr.getBoundingClientRect()
+			rrr.style.left = (xd_rect.left+xd_rect.width-rrr_rect.width/2-xd_border/2)+'px'
+			rrr.style.top = (xd_rect.top+xd_rect.height/2-rrr_rect.height/2)+'px'
+			var lll = document.querySelector('#lll')
+			var lll_rect = lll.getBoundingClientRect()
+			lll.style.left = (xd_rect.left-lll_rect.width/2+xd_border/2)+'px'
+			lll.style.top = (xd_rect.top+xd_rect.height/2-lll_rect.height/2)+'px'
+			var ttt = document.querySelector('#ttt')
+			var ttt_rect = ttt.getBoundingClientRect()
+			ttt.style.top = (xd_rect.top-ttt_rect.height/2+xd_border/2)+'px'
+			ttt.style.left = (xd_rect.left+xd_rect.width/2-ttt_rect.width/2)+'px'
+			var bbb = document.querySelector('#bbb')
+			var bbb_rect = bbb.getBoundingClientRect()
+			bbb.style.top = (xd_rect.top+xd_rect.height-bbb_rect.height/2-xd_border/2)+'px'
+			bbb.style.left = (xd_rect.left+xd_rect.width/2-bbb_rect.width/2)+'px'
+			update_over_lay(xd_rect, rrr_rect, lll_rect, ttt_rect, bbb_rect )
+		}
+
+		function update_over_lay(xd_rect, rrr_rect, lll_rect, ttt_rect, bbb_rect ) {
+			xd_rect = xd.getBoundingClientRect()
+			var l_ol = document.querySelector('#l_over_lay')
+			l_ol.style.left = (canvas_rect.left)+'px'
+			l_ol.style.width = (xd_rect.left+xd_border/2 - canvas_rect.left)+'px'
+			l_ol.style.top = (canvas_rect.top)+'px'
+			l_ol.style.height = ( canvas_rect.height )+'px'
+			var r_ol = document.querySelector('#r_over_lay')
+			r_ol.style.left = (xd_rect.left+xd_rect.width)+'px'
+			r_ol.style.width = (canvas_rect.left + canvas_rect.width - ( xd_rect.left+xd_rect.width ) )+'px'
+			r_ol.style.top = (canvas_rect.top)+'px'
+			r_ol.style.height = ( canvas_rect.height )+'px'
+			var t_ol = document.querySelector('#t_over_lay')
+			t_ol.style.left = ( canvas_rect.left + (xd_rect.left+xd_border/2 - canvas_rect.left) )+'px'
+			t_ol.style.width = ( xd_rect.width - xd_border/2 )+'px'
+			t_ol.style.top = (canvas_rect.top)+'px'
+			t_ol.style.height = ( (xd_rect.top) - (canvas_rect.top) )+'px'
+			var b_ol = document.querySelector('#b_over_lay')
+			b_ol.style.left = ( canvas_rect.left + (xd_rect.left+xd_border/2 - canvas_rect.left) )+'px'
+			b_ol.style.width = ( xd_rect.width - xd_border/2 )+'px'
+			b_ol.style.top = ( xd_rect.top + xd_rect.height )+'px'
+			b_ol.style.height = ( ( canvas_rect.top + canvas_rect.height ) - (xd_rect.top + xd_rect.height) )+'px'
+		}
+		
+		function resize_or_drag(resize_control) {
+			xd_rect = xd.getBoundingClientRect()
+			if ( resize_control === 'ttt' ) {
+				if ( !( canvas_rect.top > ( (event.clientY - yyy) + (xd_rect.top) ) 
+					|| ( canvas_rect.top + canvas_rect.height ) < ( (event.clientY - yyy) + (xd_rect.top) + (xd_rect.height - 10) - (event.clientY - yyy) )
+					|| ( canvas_rect.left ) > ( (xd_rect.left) + (3/4)*(event.clientY - yyy)/2 )
+					|| ( canvas_rect.left + canvas_rect.width ) < ( (xd_rect.left) + (3/4)*(event.clientY - yyy)/2 + ( (3/4)*((xd_rect.height - 10) - (event.clientY - yyy)) ) )
+					|| ( (3/4)*((xd_rect.height - 10) - (event.clientY - yyy)) ) < 30
+				) ) {
+					xd.style.height = `${((xd_rect.height - 10) - (event.clientY - yyy))}px`
+					xd.style.width=`${(3/4)*((xd_rect.height - 10) - (event.clientY - yyy))}px`
+					xd.style.left=`${((xd_rect.left) + (3/4)*(event.clientY - yyy)/2)}px`
+					xd.style.top = `${((event.clientY - yyy) + (xd_rect.top))}px`
+				}
+				yyy = event.clientY
+				update_little()
+			}
+			if ( resize_control === 'bbb' ) {
+				if ( !( ( canvas_rect.top + canvas_rect.height ) < ( xd_rect.top + (xd_rect.height - 10) + (event.clientY - yyy) )
+					|| ( canvas_rect.left ) > ( (xd_rect.left) - (3/4)*(event.clientY - yyy)/2 )
+					|| ( canvas_rect.left + canvas_rect.width ) < ( (xd_rect.left) - (3/4)*(event.clientY - yyy)/2 + (3/4)*((xd_rect.height - 10) + (event.clientY - yyy)) )
+					|| ( (3/4)*((xd_rect.height - 10) + (event.clientY - yyy)) ) < 30
+				) ) {
+					xd.style.height = `${((xd_rect.height - 10) + (event.clientY - yyy))}px`
+					xd.style.width=`${(3/4)*((xd_rect.height - 10) + (event.clientY - yyy))}px`
+					xd.style.left=`${((xd_rect.left) - (3/4)*(event.clientY - yyy)/2)}px`
+				}
+				yyy = event.clientY
+				update_little()
+			}
+			if ( resize_control === 'rrr' ) {
+				if ( !( canvas_rect.top > ((4/3)*(xxx - event.clientX)/2 + (xd_rect.top)) 
+					|| (canvas_rect.top + canvas_rect.height) < ( ((4/3)*(xxx - event.clientX)/2 + (xd_rect.top)) + ((4/3)*((event.clientX - xxx) + (xd_rect.width - 10))) )
+					|| (canvas_rect.left + canvas_rect.width) < ( xd_rect.left+(event.clientX - xxx) + (xd_rect.width - 10) )
+					|| ( (event.clientX - xxx) + (xd_rect.width - 10) ) < 30
+				) ) {
+					xd.style.width=`${(event.clientX - xxx) + (xd_rect.width - 10)}px`
+					xd.style.height = `${((4/3)*((event.clientX - xxx) + (xd_rect.width - 10)))}px`
+					xd.style.top = `${((4/3)*(xxx - event.clientX)/2 + (xd_rect.top))}px`
+				}
+				xxx = event.clientX	
+				update_little()
+			}
+			if ( resize_control === 'lll' ) {
+				if ( !( canvas_rect.top > ((4/3)*(event.clientX - xxx)/2 + (xd_rect.top)) 
+					|| (canvas_rect.top + canvas_rect.height)<( ((4/3)*(event.clientX - xxx)/2 + (xd_rect.top)) + ((4/3)*((xd_rect.width - 10) - (event.clientX - xxx))) )
+					|| canvas_rect.left>( (xd_rect.left) + (event.clientX - xxx) )
+					|| ( canvas_rect.left + canvas_rect.width )<( (xd_rect.left) + (event.clientX - xxx) + (xd_rect.width - 10) - (event.clientX - xxx) )
+					|| ( (xd_rect.width - 10) - (event.clientX - xxx) ) < 30
+				) ) {
+					xd.style.width=`${(xd_rect.width - 10) - (event.clientX - xxx)}px`
+					xd.style.left=`${(xd_rect.left) + (event.clientX - xxx)}px`
+					xd.style.height = `${((4/3)*((xd_rect.width - 10) - (event.clientX - xxx)))}px`
+					xd.style.top = `${((4/3)*(event.clientX - xxx)/2 + (xd_rect.top))}px`
+				}
+				xxx = event.clientX	
+				update_little()
+			}
+			if ( resize_control === 'xd' ) {
+				// вертикальное перемещение
+				if ( !( (xd_rect.top + (event.clientY - yyy))<canvas_rect.top || (xd_rect.top + (event.clientY - yyy))+xd_rect.height>canvas_rect.top+canvas_rect.height ) ) {
+					xd.style.top = `${((xd_rect.top) + (event.clientY - yyy))}px`
+					yyy = event.clientY
+				}
+				// горизонтальное перемещение
+				if ( !( ((xd_rect.left) + (event.clientX - xxx))<canvas_rect.left || ((xd_rect.left) + (event.clientX - xxx))+xd_rect.width>canvas_rect.left+canvas_rect.width ) ) {
+					xd.style.left=`${((xd_rect.left) + (event.clientX - xxx))}px`
+					xxx = event.clientX	
+				}
+				update_little()
+			}
+		}
+
+		async function postInServer() {
+			function b64toBlob(b64Data, contentType, sliceSize) {
+					contentType = contentType || '';
+					sliceSize = sliceSize || 512;
+					var byteCharacters = atob(b64Data);
+					var byteArrays = [];
+					for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+						var slice = byteCharacters.slice(offset, offset + sliceSize);
+						var byteNumbers = new Array(slice.length);
+						for (var i = 0; i < slice.length; i++) {
+							byteNumbers[i] = slice.charCodeAt(i);
+						}
+						var byteArray = new Uint8Array(byteNumbers);
+						byteArrays.push(byteArray);
+					}
+				var blob = new Blob(byteArrays, {type: contentType});
+				return blob;
+			}
+
+			var ImageURL = document.querySelector('canvas').toDataURL('image/jpeg', 0.2)
+
+			// Split the base64 string in data and contentType
+			var block = ImageURL.split(";");
+			// Get the content type of the image
+			var contentType = block[0].split(":")[1];// In this case "image/gif"
+			// get the real base64 content of the file
+			var realData = block[1].split(",")[1];// In this case "R0lGODlhPQBEAPeoAJosM...."
+
+			// Convert it to a blob to upload
+			var blob = b64toBlob(realData, contentType);
+
+			// Create a FormData and append the file with "image" as parameter name
+			var formDataToUpload = new FormData();
+			formDataToUpload.append("image", blob);
+
+			// const dataUrl = document.querySelector('canvas').toDataURL('image/jpeg', 0.2)
+			// fetch(url, 'POST', dataUrl)
+			// let headers = {"Content-Type": "application/json; charset=utf-8"}
+			// if (getState().config.isAdmin) {
+                // headers["Token"] = "getState().auth.token"
+            // }
+			const response = await fetch('http://localhost:3000/saveImg', {
+                method: 'POST',
+				// body: JSON.stringify({"img": "dataUrl"}),
+				body: formDataToUpload,
+				// headers
+            })
+			// console.log(dataUrl)
+		}
+		
+	</script>
+
+</body>
+</html>
